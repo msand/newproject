@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from "react";
+import RNFetchBlob from 'react-native-fetch-blob';
 import RNFS from 'react-native-fs';
 import {
   AppRegistry,
@@ -33,16 +34,18 @@ export default class RNSvgTextBug extends Component {
   state = {fontData: null};
   constructor() {
     super();
-    if (Platform.OS === 'android') {
-      RNFS
-        .readFileAssets(`fonts/${font}.otf`, 'base64')
-        .then(res => opentype.parse(base64.decode(res)))
-        .then(fontData => {
-          console.log(fontData);
-          this.setState({fontData: JSON.decycle(fontData)});
-        })
-        .catch(err => console.log(err));
-    }
+
+    const fontPromise = Platform.OS === 'android' ?
+      RNFS.readFileAssets(`fonts/${font}.otf`, 'base64') :
+      RNFetchBlob.fs.readFile(RNFetchBlob.fs.asset(`fonts/${font}.otf`), 'base64');
+
+    fontPromise
+      .then(res => opentype.parse(base64.decode(res)))
+      .then(fontData => {
+        console.log(fontData);
+        this.setState({fontData: JSON.decycle(fontData)});
+      })
+      .catch(err => console.log(err));
   }
   render() {
     return (
