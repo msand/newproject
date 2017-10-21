@@ -9,6 +9,8 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import RNFS from 'react-native-fs';
 import {
   AppRegistry,
+  StyleSheet,
+  Text,
   View,
   Dimensions,
   ScrollView,
@@ -19,6 +21,53 @@ import base64 from 'base64-arraybuffer';
 import All from "./components/all";
 
 import { captureRef } from "react-native-view-shot";
+
+import Animation from 'lottie-react-native';
+
+import anim from '../assets/soda_loader.json';
+
+class Lottieloader extends Component {
+  componentDidMount() {
+    this.animation.play();
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Welcome to Lottie Animations :-)</Text>
+        <View>
+          <Animation
+            ref={animation => {
+              this.animation = animation;
+            }}
+            style={{
+              width: 80,
+              height: 80
+            }}
+            loop={true}
+            source={anim}
+          />
+        </View>
+
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A6207E'
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+    color: '#ffffff'
+  }
+});
 
 const opentype = require('opentype.js');
 
@@ -53,6 +102,7 @@ export default class RNSvgTextBug extends Component {
         ref={ref => (this.ref = ref)}
         style={{ backgroundColor: "#ffffff" }}
       >
+        <Lottieloader/>
         <All
           View={View}
           width={width}
